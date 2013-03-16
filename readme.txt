@@ -42,6 +42,7 @@ If you want to place the widget into a page rather than a sidebar:
 == Changelog ==
 
 **1.0.1**: Fixed bug that prevents the widget from loading.
+
 **1.0.2**: Deleted redundant images.
 
 == Upgrade notice ==
