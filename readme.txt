@@ -33,7 +33,7 @@ If you want to place the widget into a page rather than a sidebar:
 
 == Frequently asked questions ==
 
-
+**Known bug**: Demba Ba appears in the list twice, for Newcastle and Chelsea.
 
 == Screenshots ==
 
