@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: StatsFC Top Scorers
-Plugin URI: https://statsfc.com/developers
+Plugin URI: https://statsfc.com/docs/wordpress
 Description: StatsFC Top Scorers
 Version: 1.0.2
 Author: Will Woodward
