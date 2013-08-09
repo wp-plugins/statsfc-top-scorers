@@ -3,7 +3,7 @@
 Plugin Name: StatsFC Top Scorers
 Plugin URI: https://statsfc.com/docs/wordpress
 Description: StatsFC Top Scorers
-Version: 1.1.1
+Version: 1.1.2
 Author: Will Woodward
 Author URI: http://willjw.co.uk
 License: GPL2
@@ -219,7 +219,6 @@ class StatsFC_TopScorers extends WP_Widget {
 
 			curl_setopt_array($ch, array(
 				CURLOPT_AUTOREFERER		=> true,
-				CURLOPT_FOLLOWLOCATION	=> true,
 				CURLOPT_HEADER			=> false,
 				CURLOPT_RETURNTRANSFER	=> true,
 				CURLOPT_TIMEOUT			=> 5,
