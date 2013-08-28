@@ -3,7 +3,7 @@
 Plugin Name: StatsFC Top Scorers
 Plugin URI: https://statsfc.com/docs/wordpress
 Description: StatsFC Top Scorers
-Version: 1.1.3
+Version: 1.1.4
 Author: Will Woodward
 Author URI: http://willjw.co.uk
 License: GPL2
@@ -186,18 +186,19 @@ class StatsFC_TopScorers extends WP_Widget {
 					<tbody>
 						<?php
 						foreach ($json as $row) {
-							$classes = array();
+							$class		= (! empty($highlight) && $highlight == $row->team ? ' class="statsfc_highlight"' : '');
+							$player		= esc_attr($row->player);
+							$teamPath	= esc_attr(str_replace(' ', '-', strtolower($row->team)));
+							$teamName	= esc_attr($row->teamshort);
+							$goals		= esc_attr($row->goals);
 
-							if (! empty($highlight) && $highlight == $row->team) {
-								$classes[] = 'statsfc_highlight';
-							}
-							?>
-							<tr<?php echo (! empty($classes) ? ' class="' . implode(' ', $classes) . '"' : ''); ?>>
-								<td><?php echo esc_attr($row->player); ?></td>
-								<td class="statsfc_team statsfc_badge_<?php echo str_replace(' ', '', strtolower($row->team)); ?>"><?php echo esc_attr($row->teamshort); ?></td>
-								<td class="statsfc_numeric"><?php echo esc_attr($row->goals); ?></td>
+							echo <<< HTML
+							<tr{$class}>
+								<td>{$player}</td>
+								<td class="statsfc_team" style="background-image: url(//api.statsfc.com/kit/{$teamPath}.png);">{$teamName}</td>
+								<td class="statsfc_numeric">{$goals}</td>
 							</tr>
-						<?php
+HTML;
 						}
 						?>
 					</tbody>
