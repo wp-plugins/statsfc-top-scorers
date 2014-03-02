@@ -3,7 +3,7 @@
 Plugin Name: StatsFC Top Scorers
 Plugin URI: https://statsfc.com/docs/wordpress
 Description: StatsFC Top Scorers
-Version: 1.1.4
+Version: 1.1.5
 Author: Will Woodward
 Author URI: http://willjw.co.uk
 License: GPL2
@@ -208,7 +208,7 @@ HTML;
 			</div>
 		<?php
 		} catch (Exception $e) {
-			echo '<p class="statsfc_error">' . esc_attr($e->getMessage()) .'</p>' . PHP_EOL;
+			echo '<p style="text-align: center;"><img src="//statsfc.com/i/icon.png" width="64" height="64" alt="Football widgets and API"><br><a href="https://statsfc.com" title="Football widgets and API" target="_blank">StatsFC.com</a> – ' . esc_attr($e->getMessage()) .'</p>' . PHP_EOL;
 		}
 
 		echo $after_widget;
