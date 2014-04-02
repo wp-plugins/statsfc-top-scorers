@@ -3,7 +3,7 @@
 Plugin Name: StatsFC Top Scorers
 Plugin URI: https://statsfc.com/docs/wordpress
 Description: StatsFC Top Scorers
-Version: 1.1.5
+Version: 1.2
 Author: Will Woodward
 Author URI: http://willjw.co.uk
 License: GPL2
@@ -50,7 +50,8 @@ class StatsFC_TopScorers extends WP_Widget {
 		$defaults = array(
 			'title'			=> __('Top Scorers', STATSFC_TOPSCORERS_ID),
 			'api_key'		=> __('', STATSFC_TOPSCORERS_ID),
-			'type'			=> __('', STATSFC_TOPSCORERS_ID),
+			'competition'	=> __('', STATSFC_TOPSCORERS_ID),
+			'team'			=> __('', STATSFC_TOPSCORERS_ID),
 			'highlight'		=> __('', STATSFC_TOPSCORERS_ID),
 			'default_css'	=> __('', STATSFC_TOPSCORERS_ID)
 		);
@@ -58,7 +59,8 @@ class StatsFC_TopScorers extends WP_Widget {
 		$instance		= wp_parse_args((array) $instance, $defaults);
 		$title			= strip_tags($instance['title']);
 		$api_key		= strip_tags($instance['api_key']);
-		$type			= strip_tags($instance['type']);
+		$competition	= strip_tags($instance['competition']);
+		$team			= strip_tags($instance['team']);
 		$highlight		= strip_tags($instance['highlight']);
 		$default_css	= strip_tags($instance['default_css']);
 		?>
@@ -76,35 +78,54 @@ class StatsFC_TopScorers extends WP_Widget {
 		</p>
 		<p>
 			<label>
-				<?php _e('Highlight', STATSFC_TOPSCORERS_ID); ?>:
+				<?php _e('Competition', STATSFC_TOPSCORERS_ID); ?>:
 				<?php
 				try {
-					$data = $this->_fetchData('https://api.statsfc.com/premier-league/teams.json?key=' . (! empty($api_key) ? $api_key : 'free'));
+					$data = $this->_fetchData('https://api.statsfc.com/crowdscores/competitions.php');
 
 					if (empty($data)) {
-						throw new Exception('There was an error connecting to the StatsFC API');
+						throw new Exception;
 					}
 
 					$json = json_decode($data);
+
 					if (isset($json->error)) {
-						throw new Exception($json->error);
+						throw new Exception;
 					}
 					?>
-					<select class="widefat" name="<?php echo $this->get_field_name('highlight'); ?>">
+					<select class="widefat" name="<?php echo $this->get_field_name('competition'); ?>">
 						<option></option>
 						<?php
-						foreach ($json as $team) {
-							echo '<option value="' . esc_attr($team->name) . '"' . ($team->name == $highlight ? ' selected' : '') . '>' . esc_attr($team->name) . '</option>' . PHP_EOL;
+						foreach ($json as $comp) {
+							echo '<option value="' . esc_attr($comp->key) . '"' . ($comp->key == $competition ? ' selected' : '') . '>' . esc_attr($comp->name) . '</option>' . PHP_EOL;
 						}
 						?>
 					</select>
 				<?php
 				} catch (Exception $e) {
 				?>
-					<input class="widefat" name="<?php echo $this->get_field_name('highlight'); ?>" type="text" value="<?php echo esc_attr($highlight); ?>">
+					<input class="widefat" name="<?php echo $this->get_field_name('competition'); ?>" type="text" value="<?php echo esc_attr($competition); ?>">
 				<?php
 				}
 				?>
+			</label>
+		</p>
+		<p>
+			<label>
+				<?php _e('Team', STATSFC_TOPSCORERS_ID); ?>:
+				<input class="widefat" name="<?php echo $this->get_field_name('team'); ?>" type="text" value="<?php echo esc_attr($team); ?>" placeholder="e.g., Liverpool, Manchester City">
+			</label>
+		</p>
+		<p>
+			<label>
+				<?php _e('Limit', STATSFC_TOPSCORERS_ID); ?>:
+				<input class="widefat" name="<?php echo $this->get_field_name('limit'); ?>" type="number" value="<?php echo esc_attr($limit); ?>" min="0" max="99"><br>
+			</label>
+		</p>
+		<p>
+			<label>
+				<?php _e('Highlight', STATSFC_TOPSCORERS_ID); ?>:
+				<input class="widefat" name="<?php echo $this->get_field_name('highlight'); ?>" type="text" value="<?php echo esc_attr($highlight); ?>" placeholder="E.g., Liverpool, Swansea City">
 			</label>
 		</p>
 		<p>
@@ -130,7 +151,9 @@ class StatsFC_TopScorers extends WP_Widget {
 		$instance					= $old_instance;
 		$instance['title']			= strip_tags($new_instance['title']);
 		$instance['api_key']		= strip_tags($new_instance['api_key']);
-		$instance['type']			= strip_tags($new_instance['type']);
+		$instance['competition']	= strip_tags($new_instance['competition']);
+		$instance['team']			= strip_tags($new_instance['team']);
+		$instance['limit']			= strip_tags($new_instance['limit']);
 		$instance['highlight']		= strip_tags($new_instance['highlight']);
 		$instance['default_css']	= strip_tags($new_instance['default_css']);
 
@@ -150,6 +173,9 @@ class StatsFC_TopScorers extends WP_Widget {
 
 		$title			= apply_filters('widget_title', $instance['title']);
 		$api_key		= $instance['api_key'];
+		$competition	= $instance['competition'];
+		$team			= $instance['team'];
+		$limit			= $instance['limit'];
 		$highlight		= $instance['highlight'];
 		$default_css	= $instance['default_css'];
 
@@ -157,17 +183,20 @@ class StatsFC_TopScorers extends WP_Widget {
 		echo $before_title . $title . $after_title;
 
 		try {
-			$data = $this->_fetchData('https://api.statsfc.com/premier-league/top-scorers.json?key=' . $api_key);
+			$data = $this->_fetchData('https://api.statsfc.com/crowdscores/top-scorers.php?key=' . urlencode($api_key) . '&competition=' . urlencode($competition) . '&team=' . urlencode($team) . '&limit=' . urlencode($limit));
 
 			if (empty($data)) {
 				throw new Exception('There was an error connecting to the StatsFC API');
 			}
 
 			$json = json_decode($data);
+
 			if (isset($json->error)) {
 				throw new Exception($json->error);
-				return;
 			}
+
+			$scorers	= $json->scorers;
+			$customer	= $json->customer;
 
 			if ($default_css) {
 				wp_register_style(STATSFC_TOPSCORERS_ID . '-css', plugins_url('all.css', __FILE__));
@@ -185,30 +214,24 @@ class StatsFC_TopScorers extends WP_Widget {
 					</thead>
 					<tbody>
 						<?php
-						foreach ($json as $row) {
-							$class		= (! empty($highlight) && $highlight == $row->team ? ' class="statsfc_highlight"' : '');
-							$player		= esc_attr($row->player);
-							$teamPath	= esc_attr(str_replace(' ', '-', strtolower($row->team)));
-							$teamName	= esc_attr($row->teamshort);
-							$goals		= esc_attr($row->goals);
-
-							echo <<< HTML
-							<tr{$class}>
-								<td>{$player}</td>
-								<td class="statsfc_team" style="background-image: url(//api.statsfc.com/kit/{$teamPath}.png);">{$teamName}</td>
-								<td class="statsfc_numeric">{$goals}</td>
+						foreach ($scorers as $scorer) {
+						?>
+							<tr<?php echo (! empty($highlight) && $highlight == $scorer->team ? ' class="statsfc_highlight"' : ''); ?>>
+								<td><?php echo esc_attr($scorer->player); ?></td>
+								<td class="statsfc_team" style="background-image: url(//api.statsfc.com/kit/<?php echo esc_attr($scorer->path); ?>.png);"><?php echo esc_attr($scorer->team); ?></td>
+								<td class="statsfc_numeric"><?php echo esc_attr($scorer->goals); ?></td>
 							</tr>
-HTML;
+						<?php
 						}
 						?>
 					</tbody>
 				</table>
 
-				<p class="statsfc_footer"><small>Powered by StatsFC.com</small></p>
+				<p class="statsfc_footer">Powered by StatsFC.com. Fan data via CrowdScores.com</p>
 			</div>
 		<?php
 		} catch (Exception $e) {
-			echo '<p style="text-align: center;"><img src="//statsfc.com/i/icon.png" width="64" height="64" alt="Football widgets and API"><br><a href="https://statsfc.com" title="Football widgets and API" target="_blank">StatsFC.com</a> – ' . esc_attr($e->getMessage()) .'</p>' . PHP_EOL;
+			echo '<p style="text-align: center;">StatsFC.com – ' . esc_attr($e->getMessage()) .'</p>' . PHP_EOL;
 		}
 
 		echo $after_widget;

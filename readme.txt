@@ -4,7 +4,7 @@ Donate link:
 Tags: widget, football, soccer, premier league
 Requires at least: 3.3
 Tested up to: 3.5.1
-Stable tag: 1.1.5
+Stable tag: 1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -41,37 +41,23 @@ If you want to place the widget into a page rather than a sidebar:
 
 == Changelog ==
 
-**1.0.1**:
+**1.0.1**: Fixed bug that prevents the widget from loading.
 
-- Fixed bug that prevents the widget from loading.
+**1.0.2**: Deleted redundant images.
 
-**1.0.2**:
+**1.1**: Updated team badges for 2013/14.
 
-- Deleted redundant images.
+**1.1.1**: Use cURL to fetch API data if possible.
 
-**1.1**:
+**1.1.2**: Fixed possible cURL bug.
 
-- Updated team badges for 2013/14.
+**1.1.3**: Added fopen fallback if cURL request fails.
 
-**1.1.1**:
+**1.1.4**: More reliable team icons.
 
-- Use cURL to fetch API data if possible.
+**1.1.5**: Tweaked error message.
 
-**1.1.2**:
-
-- Fixed possible cURL bug.
-
-**1.1.3**:
-
-- Added fopen fallback if cURL request fails.
-
-**1.1.4**:
-
-- More reliable team icons.
-
-**1.1.5**:
-
-- Tweaked error message.
+**1.2**: Updated to use new API.
 
 == Upgrade notice ==
 
