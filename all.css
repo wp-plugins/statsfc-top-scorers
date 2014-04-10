@@ -5,4 +5,4 @@
 .statsfc_topscorers .statsfc_team {			background-repeat: no-repeat; background-position: center left; background-size: 20px 20px; line-height: 25px; padding-left: 25px !important; }
 .statsfc_topscorers .statsfc_numeric {		text-align: right; }
 .statsfc_topscorers .statsfc_highlight td {	font-weight: bold; border-top: 2px solid black; border-bottom: 2px solid black; }
-.statsfc_topscorers .statsfc_footer {		display: block !important; text-align: right; margin-top: 0; padding: 2px 5px; }
+.statsfc_topscorers .statsfc_footer {		display: block !important; text-align: right; }
