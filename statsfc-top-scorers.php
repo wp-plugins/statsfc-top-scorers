@@ -3,7 +3,7 @@
 Plugin Name: StatsFC Top Scorers
 Plugin URI: https://statsfc.com/docs/wordpress
 Description: StatsFC Top Scorers
-Version: 1.3
+Version: 1.4
 Author: Will Woodward
 Author URI: http://willjw.co.uk
 License: GPL2
@@ -32,6 +32,19 @@ define('STATSFC_TOPSCORERS_NAME',	'StatsFC Top Scorers');
  * Adds StatsFC widget.
  */
 class StatsFC_TopScorers extends WP_Widget {
+	public $isShortcode = false;
+
+	private static $defaults = array(
+		'title'			=> '',
+		'key'			=> '',
+		'competition'	=> '',
+		'team'			=> '',
+		'date'			=> '',
+		'limit'			=> 0,
+		'highlight'		=> '',
+		'default_css'	=> ''
+	);
+
 	/**
 	 * Register widget with WordPress.
 	 */
@@ -47,22 +60,13 @@ class StatsFC_TopScorers extends WP_Widget {
 	 * @param array $instance Previously saved values from database.
 	 */
 	public function form($instance) {
-		$defaults = array(
-			'title'			=> __('Top Scorers', STATSFC_TOPSCORERS_ID),
-			'api_key'		=> __('', STATSFC_TOPSCORERS_ID),
-			'competition'	=> __('', STATSFC_TOPSCORERS_ID),
-			'team'			=> __('', STATSFC_TOPSCORERS_ID),
-			'date'			=> __('', STATSFC_TOPSCORERS_ID),
-			'highlight'		=> __('', STATSFC_TOPSCORERS_ID),
-			'default_css'	=> __('', STATSFC_TOPSCORERS_ID)
-		);
-
-		$instance		= wp_parse_args((array) $instance, $defaults);
+		$instance		= wp_parse_args((array) $instance, self::$defaults);
 		$title			= strip_tags($instance['title']);
-		$api_key		= strip_tags($instance['api_key']);
+		$key			= strip_tags($instance['key']);
 		$competition	= strip_tags($instance['competition']);
 		$team			= strip_tags($instance['team']);
 		$date			= strip_tags($instance['date']);
+		$limit			= strip_tags($instance['limit']);
 		$highlight		= strip_tags($instance['highlight']);
 		$default_css	= strip_tags($instance['default_css']);
 		?>
@@ -74,8 +78,8 @@ class StatsFC_TopScorers extends WP_Widget {
 		</p>
 		<p>
 			<label>
-				<?php _e('API key', STATSFC_TOPSCORERS_ID); ?>:
-				<input class="widefat" name="<?php echo $this->get_field_name('api_key'); ?>" type="text" value="<?php echo esc_attr($api_key); ?>">
+				<?php _e('Key', STATSFC_TOPSCORERS_ID); ?>:
+				<input class="widefat" name="<?php echo $this->get_field_name('key'); ?>" type="text" value="<?php echo esc_attr($key); ?>">
 			</label>
 		</p>
 		<p>
@@ -127,7 +131,7 @@ class StatsFC_TopScorers extends WP_Widget {
 		<p>
 			<label>
 				<?php _e('Limit', STATSFC_TOPSCORERS_ID); ?>:
-				<input class="widefat" name="<?php echo $this->get_field_name('limit'); ?>" type="number" value="<?php echo esc_attr($limit); ?>" min="0" max="99"><br>
+				<input class="widefat" name="<?php echo $this->get_field_name('limit'); ?>" type="number" value="<?php echo esc_attr($limit); ?>" min="0" max="99">
 			</label>
 		</p>
 		<p>
@@ -158,7 +162,7 @@ class StatsFC_TopScorers extends WP_Widget {
 	public function update($new_instance, $old_instance) {
 		$instance					= $old_instance;
 		$instance['title']			= strip_tags($new_instance['title']);
-		$instance['api_key']		= strip_tags($new_instance['api_key']);
+		$instance['key']			= strip_tags($new_instance['key']);
 		$instance['competition']	= strip_tags($new_instance['competition']);
 		$instance['team']			= strip_tags($new_instance['team']);
 		$instance['date']			= strip_tags($new_instance['date']);
@@ -181,7 +185,7 @@ class StatsFC_TopScorers extends WP_Widget {
 		extract($args);
 
 		$title			= apply_filters('widget_title', $instance['title']);
-		$api_key		= $instance['api_key'];
+		$key			= $instance['key'];
 		$competition	= $instance['competition'];
 		$team			= $instance['team'];
 		$date			= $instance['date'];
@@ -189,11 +193,11 @@ class StatsFC_TopScorers extends WP_Widget {
 		$highlight		= $instance['highlight'];
 		$default_css	= $instance['default_css'];
 
-		echo $before_widget;
-		echo $before_title . $title . $after_title;
+		$html  = $before_widget;
+		$html .= $before_title . $title . $after_title;
 
 		try {
-			$data = $this->_fetchData('https://api.statsfc.com/crowdscores/top-scorers.php?key=' . urlencode($api_key) . '&competition=' . urlencode($competition) . '&team=' . urlencode($team) . '&date=' . urlencode($date) . '&limit=' . urlencode($limit));
+			$data = $this->_fetchData('https://api.statsfc.com/crowdscores/top-scorers.php?key=' . urlencode($key) . '&competition=' . urlencode($competition) . '&team=' . urlencode($team) . '&date=' . urlencode($date) . '&limit=' . urlencode($limit));
 
 			if (empty($data)) {
 				throw new Exception('There was an error connecting to the StatsFC API');
@@ -212,7 +216,8 @@ class StatsFC_TopScorers extends WP_Widget {
 				wp_register_style(STATSFC_TOPSCORERS_ID . '-css', plugins_url('all.css', __FILE__));
 				wp_enqueue_style(STATSFC_TOPSCORERS_ID . '-css');
 			}
-			?>
+
+			$html .= <<< HTML
 			<div class="statsfc_topscorers">
 				<table>
 					<thead>
@@ -223,28 +228,46 @@ class StatsFC_TopScorers extends WP_Widget {
 						</tr>
 					</thead>
 					<tbody>
-						<?php
-						foreach ($scorers as $scorer) {
-						?>
-							<tr<?php echo (! empty($highlight) && $highlight == $scorer->team ? ' class="statsfc_highlight"' : ''); ?>>
-								<td><?php echo esc_attr($scorer->player); ?></td>
-								<td class="statsfc_team" style="background-image: url(//api.statsfc.com/kit/<?php echo esc_attr($scorer->path); ?>.png);"><?php echo esc_attr($scorer->team); ?></td>
-								<td class="statsfc_numeric"><?php echo esc_attr($scorer->goals); ?></td>
-							</tr>
-						<?php
-						}
-						?>
+HTML;
+
+			foreach ($scorers as $scorer) {
+				$class	= '';
+				$player	= esc_attr($scorer->player);
+				$badge	= esc_attr($scorer->path);
+				$team	= esc_attr($scorer->team);
+				$goals	= esc_attr($scorer->goals);
+
+				if (! empty($highlight) && $highlight == $scorer->team) {
+					$class = 'statsfc_highlight';
+				}
+
+				$html .= <<< HTML
+				<tr class="{$class}">
+					<td>{$player}</td>
+					<td class="statsfc_team" style="background-image: url(//api.statsfc.com/kit/{$badge}.png);">{$team}</td>
+					<td class="statsfc_numeric">{$goals}</td>
+				</tr>
+HTML;
+			}
+
+			$html .= <<< HTML
 					</tbody>
 				</table>
 
 				<p class="statsfc_footer"><small>Powered by StatsFC.com. Fan data via CrowdScores.com</small></p>
 			</div>
-		<?php
+HTML;
 		} catch (Exception $e) {
-			echo '<p style="text-align: center;">StatsFC.com – ' . esc_attr($e->getMessage()) .'</p>' . PHP_EOL;
+			$html .= '<p style="text-align: center;">StatsFC.com – ' . esc_attr($e->getMessage()) . '</p>' . PHP_EOL;
 		}
 
-		echo $after_widget;
+		$html .= $after_widget;
+
+		if ($this->isShortcode) {
+			return $html;
+		} else {
+			echo $html;
+		}
 	}
 
 	private function _fetchData($url) {
@@ -279,7 +302,17 @@ class StatsFC_TopScorers extends WP_Widget {
 	private function _fopenRequest($url) {
 		return file_get_contents($url);
 	}
+
+	public static function shortcode($atts) {
+		$args = shortcode_atts(self::$defaults, $atts);
+
+		$widget					= new self;
+		$widget->isShortcode	= true;
+
+		return $widget->widget(array(), $args);
+	}
 }
 
 // register StatsFC widget
 add_action('widgets_init', create_function('', 'register_widget("' . STATSFC_TOPSCORERS_ID . '");'));
+add_shortcode('statsfc-top-scorers', STATSFC_TOPSCORERS_ID . '::shortcode');
