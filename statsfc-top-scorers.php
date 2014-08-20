@@ -3,7 +3,7 @@
 Plugin Name: StatsFC Top Scorers
 Plugin URI: https://statsfc.com/docs/wordpress
 Description: StatsFC Top Scorers
-Version: 1.4.1
+Version: 1.4.2
 Author: Will Woodward
 Author URI: http://willjw.co.uk
 License: GPL2
@@ -244,7 +244,7 @@ HTML;
 				$html .= <<< HTML
 				<tr class="{$class}">
 					<td>{$player}</td>
-					<td class="statsfc_team" style="background-image: url(//api.statsfc.com/kit/{$badge}.png);">{$team}</td>
+					<td class="statsfc_team" style="background-image: url(//api.statsfc.com/kit/{$badge}.svg);">{$team}</td>
 					<td class="statsfc_numeric">{$goals}</td>
 				</tr>
 HTML;

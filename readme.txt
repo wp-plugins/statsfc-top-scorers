@@ -4,7 +4,7 @@ Donate link:
 Tags: widget, football, soccer, premier league
 Requires at least: 3.3
 Tested up to: 3.9
-Stable tag: 1.4.1
+Stable tag: 1.4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -66,6 +66,8 @@ You can also use the `[statsfc-top-scorers]` shortcode, with the following optio
 **1.3**: Added a `date` parameter.
 
 **1.4**: Added `[statsfc-top-scorer]` shortcode.
+
+**1.4.2**: Updated team badges.
 
 == Upgrade notice ==
 
