@@ -12,9 +12,9 @@ This widget will place a live Premier League top scorers table in your website.
 
 == Description ==
 
-Add a Premier League top scorers table to your WordPress website. To request an API key sign up for free at [statsfc.com](https://statsfc.com).
+Add a Premier League top scorers table to your WordPress website. To request a key sign up for your free trial at [statsfc.com](https://statsfc.com).
 
-For a demo, check out [wp.statsfc.com](http://wp.statsfc.com).
+For a demo, check out [wp.statsfc.com/top-scorers/](http://wp.statsfc.com/top-scorers/).
 
 == Installation ==
 
