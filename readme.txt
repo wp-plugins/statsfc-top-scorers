@@ -4,7 +4,7 @@ Donate link:
 Tags: widget, football, soccer, premier league
 Requires at least: 3.3
 Tested up to: 4.0
-Stable tag: 1.5
+Stable tag: 1.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -76,6 +76,8 @@ You can also use the `[statsfc-top-scorers]` shortcode, with the following optio
 **1.4.5**: Use built-in WordPress HTTP API functions
 
 **1.5**: Enabled ad-support
+
+**1.5.1**: Allow more discrete ads for ad-supported accounts
 
 == Upgrade notice ==
 
