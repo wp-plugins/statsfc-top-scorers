@@ -3,16 +3,16 @@ Contributors: willjw
 Donate link:
 Tags: widget, football, soccer, premier league
 Requires at least: 3.3
-Tested up to: 4.0
-Stable tag: 1.5.1
+Tested up to: 4.2.2
+Stable tag: 1.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-This widget will place a live Premier League top scorers table in your website.
+This widget will place a live football top scorers table in your website.
 
 == Description ==
 
-Add a Premier League top scorers table to your WordPress website. To request a key sign up for your free trial at [statsfc.com](https://statsfc.com).
+Add a football top scorers table to your WordPress website. To request a key sign up for your free trial at [statsfc.com](https://statsfc.com).
 
 For a demo, check out [wp.statsfc.com/top-scorers/](http://wp.statsfc.com/top-scorers/).
 
@@ -29,8 +29,9 @@ You can also use the `[statsfc-top-scorers]` shortcode, with the following optio
 - `competition` (required*): Competition key, e.g., `EPL`
 - `team` (required*): Team name, e.g., `Liverpool`
 - `date` (optional): For a back-dated top scorers list, e.g., `2013-12-31`
-- `limit` (optional): Maximum number of top scorers to show, e.g., `5`, `10`
 - `highlight` (optional): Name of the team you want to highlight, e.g., `Liverpool`
+- `limit` (optional): Maximum number of top scorers to show, e.g., `5`, `10`
+- `show_badges` (optional): Display team badges, `true` or `false`
 - `default_css` (optional): Use the default widget styles, `true` or `false`
 
 *Only one of `competition` or `team` is required.
@@ -78,6 +79,8 @@ You can also use the `[statsfc-top-scorers]` shortcode, with the following optio
 **1.5**: Enabled ad-support
 
 **1.5.1**: Allow more discrete ads for ad-supported accounts
+
+**1.6**: Added `show_badges` parameter
 
 == Upgrade notice ==
 

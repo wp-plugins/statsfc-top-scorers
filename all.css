@@ -1,8 +1,9 @@
-.statsfc_topscorers table {					display: table; width: 100%; border-collapse: collapse; }
-.statsfc_topscorers th,
-.statsfc_topscorers td {					text-align: left; padding: 2px 5px; }
-.statsfc_topscorers thead th {				text-transform: uppercase; font-size: small; background-color: silver; }
-.statsfc_topscorers .statsfc_team {			background-repeat: no-repeat; background-position: center left; background-size: 20px 20px; line-height: 25px; padding-left: 25px !important; }
-.statsfc_topscorers .statsfc_numeric {		text-align: right; }
-.statsfc_topscorers .statsfc_highlight td {	font-weight: bold; border-top: 2px solid black; border-bottom: 2px solid black; }
-.statsfc_topscorers .statsfc_footer {		display: block !important; text-align: right; }
+div.sfc_topscorers table {					display: table; width: 100%; border-collapse: collapse; }
+div.sfc_topscorers th,
+div.sfc_topscorers td {						text-align: left; padding: 2px 5px; }
+div.sfc_topscorers thead th {				text-transform: uppercase; font-size: small; background-color: silver; }
+div.sfc_topscorers .sfc_numeric {			text-align: right; }
+div.sfc_topscorers tr.sfc_highlight td {	font-weight: bold; border-top: 2px solid black; border-bottom: 2px solid black; }
+div.sfc_topscorers div.sfc_footer {			display: block !important; text-align: right; }
+
+div.sfc_topscorers td.sfc_team {			background-repeat: no-repeat; background-position: center left; background-size: 20px 20px; line-height: 25px; padding-left: 25px !important; }
