@@ -4,7 +4,7 @@ Donate link:
 Tags: widget, football, soccer, premier league
 Requires at least: 3.3
 Tested up to: 4.2.2
-Stable tag: 1.6
+Stable tag: 1.6.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -81,6 +81,8 @@ You can also use the `[statsfc-top-scorers]` shortcode, with the following optio
 **1.5.1**: Allow more discrete ads for ad-supported accounts
 
 **1.6**: Added `show_badges` parameter
+
+**1.6.1**: Fixed bug with boolean options
 
 == Upgrade notice ==
 

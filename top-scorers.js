@@ -32,7 +32,7 @@ function StatsFC_TopScorers(key) {
 		var domain		= this.domain;
 		var team		= this.team;
 		var highlight	= this.highlight;
-		var showBadges	= this.showBadges;
+		var showBadges	= (this.showBadges === true || this.showBadges === 'true');
 
 		$j.getJSON(
 			domain + '/crowdscores/top-scorers.php?callback=?',
